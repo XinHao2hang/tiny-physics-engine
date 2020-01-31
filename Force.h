@@ -4,7 +4,7 @@ class Force
 {
 public:
 	Force();
-	~Force();
+	virtual ~Force();
 	int type = 0;
 	virtual void operator>>(Object* obj) = 0;
 	bool keep()

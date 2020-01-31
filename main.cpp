@@ -10,9 +10,9 @@ using namespace std;
 
 int main()
 {
-	Gravity G(vec3(0,0.1,0));//重力
+	Gravity G(vec3(0,0.1,0),1);//重力
 	//Gravity G1(vec3(0, 0.0, 0));//重力
-	Circle c(vec3(20,100,0),40);//圆圈
+	Circle c(10,vec3(300,100,0),40);//圆圈
 	Obj_Forces CG(&c);//力结合体
 	CG.addForce(&G);
 	world w;
@@ -21,7 +21,7 @@ int main()
 	ICircle icircle(CG,dc);
 
 	//创建一个实例直线
-	Line l(vec3(50,0,0),vec3(400,0,0),vec3(0,400,0));
+	Line l(0,vec3(50,0,0),vec3(400,0,0),vec3(0,400,0));
 	DrawLine dl;
 	Obj_Forces LG(&l);
 	ILine iline(LG,dl);

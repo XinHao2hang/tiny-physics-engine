@@ -18,19 +18,23 @@ public:
 	void update(float time)
 	{
 		//力和速度更新计算
-		for (auto force : forces)
+		list<Force*>::iterator itor;
+		itor = forces.begin();
+		while (itor != forces.end())
 		{
-			force->operator>>(obj);
-			/*if (!force->keep())
-				forces.remove(force);*/
+			
+			(*itor)->operator>>(obj);
+			
+			if (!(*itor)->keep())
+			{
+				Force * tForce = *itor;
+				forces.erase(itor++);
+				delete tForce;
+				continue;
+			}
+			++itor;
 		}
 		obj->update(time);
-		//for (auto force : forces)
-		//{
-		//	//force->operator>>(obj);
-		//	if (!force->keep())
-		//		forces.remove(force);
-		//}
 	}
 };
 

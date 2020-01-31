@@ -18,8 +18,9 @@ void Object::updatePosition(float time)
 
 void Object::update(float time)
 {
-	updatePosition(time);
 	updateVelocity(time);
+	updatePosition(time);
+	force = vec3(0,0,0);
 }
 
 void Object::operator<<(const vec3& _force)
