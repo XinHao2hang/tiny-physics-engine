@@ -9,6 +9,7 @@ public:
 	{
 		position = _center;
 		radius = _radius;
+		type = CIRCLE;
 	}
 	~Circle();
 };

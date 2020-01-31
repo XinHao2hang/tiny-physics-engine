@@ -1,12 +1,15 @@
 #pragma once
 #include<glm.hpp>
-
+enum OBJTYPE
+{
+	NOTHING,CIRCLE,LINE
+};
 using namespace glm;
 class Object
 {
 public:
 	//物体类型
-	int type = 0;
+	OBJTYPE type = NOTHING;
 	//速度
 	vec3 velocity = vec3(0,0,0);
 	//力
