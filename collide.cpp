@@ -14,6 +14,10 @@ CollideInfo collide::collideCalc(Obj_Forces* a, Obj_Forces* b)
 			std::swap(a, b);
 		return LineAndCircle(a,b);
 	}
+	if (a->obj->type == CIRCLE && b->obj->type == CIRCLE)
+	{
+		return CircleAndCircle(a, b);
+	}
 	return CollideInfo(nullptr, nullptr, 0, vec3(0, 0, 0));
 }
 
@@ -33,30 +37,34 @@ CollideInfo collide::LineAndCircle(Obj_Forces* line, Obj_Forces* circle)
 	if (abs(dot(normalize(C - A), normalize(C - B))+1)<0.0001)
 	{
 		//若在的时候，判断两点距离是不是小于半径
-		if (distance < circlePtr->radius)
-		{
-			//while (1);
-			return CollideInfo(line,circle,abs(circlePtr->radius - distance),normalize(C-O));
-		}
+		if (distance <= circlePtr->radius)
+			return CollideInfo(line,circle,abs(circlePtr->radius - distance),C);
 		return CollideInfo(nullptr, nullptr, 0, vec3(0, 0, 0));
 	}
 	else
 	{
 		float disOA = length(O -A);
 		float disOB = length(O -B);
-		if (disOA < circlePtr->radius)
-		{
-			//while (1);
-			return CollideInfo(line, circle, abs(circlePtr->radius - disOA), normalize(O - A));
-		}
-		if (disOB < circlePtr->radius)
-		{
-			//while (1);
-			return CollideInfo(line, circle, abs(circlePtr->radius - disOB), normalize(O - B));
-		}
+		if (disOA <= circlePtr->radius)
+			return CollideInfo(line, circle, abs(circlePtr->radius - disOA), A);
+		if (disOB <= circlePtr->radius)
+			return CollideInfo(line, circle, abs(circlePtr->radius - disOB), B);
 		return CollideInfo(nullptr, nullptr, 0, vec3(0, 0, 0));
 	}
 	return CollideInfo(nullptr, nullptr, 0, vec3(0,0,0));
+}
+
+CollideInfo collide::CircleAndCircle(Obj_Forces* circle1, Obj_Forces* circle2)
+{
+	Circle* circlePtr1 = dynamic_cast<Circle*>(circle1->obj);
+	Circle* circlePtr2 = dynamic_cast<Circle*>(circle2->obj);
+	//圆圈相交
+	float deep = length(circlePtr1->position - circlePtr2->position) - (circlePtr1->radius + circlePtr2->radius);
+	if (deep<=0)
+	{
+		return CollideInfo(circle1, circle2,-deep, (circlePtr1->position + circlePtr2->position)/2.0f);
+	}
+	return CollideInfo(nullptr, nullptr, 0, vec3(0, 0, 0));
 }
 
 collide::~collide()

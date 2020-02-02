@@ -7,6 +7,7 @@ public:
 	Elastic();
 	Elastic(vec3 _f, int t) :f(_f) { type = t; }
 	void operator>>(Object* obj);
+	vec3 getForce() { return f; }
 	~Elastic();
 };
 

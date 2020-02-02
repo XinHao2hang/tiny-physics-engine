@@ -13,13 +13,14 @@ void Object::updateVelocity(float time)
 
 void Object::updatePosition(float time)
 {
-	position += velocity * time + force * time * time;
+	position += velocity * time;// +force * time * time * 0.05f;
 }
 
 void Object::update(float time)
 {
-	updateVelocity(time);
+	
 	updatePosition(time);
+	updateVelocity(time);
 	force = vec3(0,0,0);
 }
 

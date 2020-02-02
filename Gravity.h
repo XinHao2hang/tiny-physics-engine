@@ -7,6 +7,7 @@ public:
 	Gravity();
 	Gravity(vec3 _g, int t) :g(_g) { type = t; }
 	virtual void operator>>(Object * obj);
+	vec3 getForce() { return g; }
 	~Gravity();
 };
 
