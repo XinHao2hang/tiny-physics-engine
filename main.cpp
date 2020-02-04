@@ -13,13 +13,15 @@ int main()
 	Gravity G(vec3(0,0.1,0), CONTINUEFORCE);//重力
 	
 	//Gravity G1(vec3(0, 0.0, 0));//重力
-	Circle c(20,vec3(400,300,0),40);//圆圈
-	Circle c1(10, vec3(200, 300, 0), 40);//圆圈
+	Circle c(10,vec3(0,0,0),vec3(400,300,0),40);//圆圈
+	
+	Circle c1(10, vec3(0,0,0),vec3(200, 270, 0), 40);//圆圈
+	c1.angular_velocity = vec3(0, 0, 1);
 	Obj_Forces CG(&c);//力结合体
 	Obj_Forces CG1(&c1);//力结合体
 	//CG.addForce(&G);
 	CG.addForce(new Elastic(vec3(-1,0,0),COLLIDEFORCE));
-	//CG1.addForce(new Elastic(vec3(1, 0, 0), COLLIDEFORCE));
+	CG1.addForce(new Elastic(vec3(1, 0, 0), COLLIDEFORCE));
 	world w;
 	//创建一个实例圆圈
 	DrawCircle dc;

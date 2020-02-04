@@ -25,8 +25,8 @@ public:
 		if (A != nullptr && B != nullptr)
 		{
 			
-			vec3 vecA = normalize(A->obj->position - cPoint);
-			vec3 vecB = normalize(B->obj->position - cPoint);
+			vec3 vecA = normalize(A->obj->getPos() - cPoint);
+			vec3 vecB = normalize(B->obj->getPos() - cPoint);
 			//碰撞点在两个型心连线上
 			if (dot(vecA, vecB) < 0.0001)
 			{
@@ -40,7 +40,6 @@ public:
 					cosb = 1;
 				//两个物体的速度分解,碰撞点到连心线上的分解
 				
-
 				vec3 rA = momentumCalc(A->obj->mass, B->obj->mass, speedA * cosa*vecA, speedB * cosb*vecB);
 				vec3 rB = momentumCalc(B->obj->mass, A->obj->mass, speedB * cosb*vecB, speedA * cosa*vecA);
 
@@ -53,23 +52,35 @@ public:
 				AC = rA;
 				BC = rB;
 
-				A->obj->velocity = AC + AR;
-				B->obj->velocity = BC + BR;
+				A->obj->velocity = (AC + AR);
+				B->obj->velocity = (BC + BR);
 				
+				//先将物体原有旋转动量转换
+				float Ra = length(A->obj->getPos() - cPoint);
+				float Rb = length(B->obj->getPos() - cPoint);
+
+				vec3 roA = cross(A->obj->angular_velocity, vecA)*0.5f;//这里是损失的角动量
+				vec3 roB = cross(B->obj->angular_velocity, vecB)*0.5f;
+
+				//计算动量后并且将角速度转换成线速度
+				vec3 troA = momentumCalc(A->obj->mass, B->obj->mass, roA, roB)*A->obj->mass*Ra;
+				vec3 troB = momentumCalc(B->obj->mass, A->obj->mass, roB, roA)*B->obj->mass*Rb;
+
+				//将运动速度转换成
+				rA = AR*A->obj->mass;
+				rB = BR*B->obj->mass;
+				
+				vec3 all = rA - rB;
+
+				//计算A和B角动量
+				vec3 dA = (all+troA-troB);
+				vec3 dB = (-all+troB-troA);
+				
+				A->obj->angular_velocity += -cross(dA, vecA * length(A->obj->getPos() - cPoint))/(A->obj->mass*Ra*Ra);
+				B->obj->angular_velocity += -cross(dB, vecB * length(B->obj->getPos() - cPoint))/(B->obj->mass*Rb*Rb);
+				 
+				//A->addForce(new Elastic(-dA/A->obj->mass/10.0f, COLLIDEFORCE));
 			}
-			//受力计算
-			vec3 force(0,0,0);
-			for (auto fa : A->forces)
-			{
-				force += fa->getForce();
-			}
-			A->addForce(new Elastic(-force,COLLIDEFORCE));
-			force = vec3(0, 0, 0);
-			for (auto fb : B->forces)
-			{
-				force += fb->getForce();
-			}
-			B->addForce(new Elastic(-force, COLLIDEFORCE));
 		}
 	}
 	vec3 momentumCalc(float mA, float mB, vec3 vA, vec3 vB)

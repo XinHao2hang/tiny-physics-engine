@@ -59,10 +59,10 @@ CollideInfo collide::CircleAndCircle(Obj_Forces* circle1, Obj_Forces* circle2)
 	Circle* circlePtr1 = dynamic_cast<Circle*>(circle1->obj);
 	Circle* circlePtr2 = dynamic_cast<Circle*>(circle2->obj);
 	//ԲȦ�ཻ
-	float deep = length(circlePtr1->position - circlePtr2->position) - (circlePtr1->radius + circlePtr2->radius);
+	float deep = length(circlePtr1->getPos() - circlePtr2->getPos()) - (circlePtr1->radius + circlePtr2->radius);
 	if (deep<=0)
 	{
-		return CollideInfo(circle1, circle2,-deep, (circlePtr1->position + circlePtr2->position)/2.0f);
+		return CollideInfo(circle1, circle2,-deep, (circlePtr1->getPos() + circlePtr2->getPos())/2.0f);
 	}
 	return CollideInfo(nullptr, nullptr, 0, vec3(0, 0, 0));
 }
