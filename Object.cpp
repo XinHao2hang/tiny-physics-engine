@@ -24,7 +24,6 @@ void Object::update(float time)
 	//ÐÞ¸ÄÐý×ª¾ØÕó
 	angular += angular_velocity;
 	axis = EulerAngle::getMat(angular);
-	
 	force = vec3(0,0,0);
 }
 

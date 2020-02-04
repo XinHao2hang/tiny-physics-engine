@@ -66,9 +66,9 @@ public:
 				vec3 troA = momentumCalc(A->obj->mass, B->obj->mass, roA, roB)*A->obj->mass*Ra;
 				vec3 troB = momentumCalc(B->obj->mass, A->obj->mass, roB, roA)*B->obj->mass*Rb;
 
-				//将运动速度转换成
-				rA = AR*A->obj->mass;
-				rB = BR*B->obj->mass;
+				//将运动速度转换成动量，这里暂不明，就是效果好， 我推算一个公式看看的
+				rA = AR*A->obj->mass* A->obj->mass;
+				rB = BR*B->obj->mass* B->obj->mass;
 				
 				vec3 all = rA - rB;
 

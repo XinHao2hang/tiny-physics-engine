@@ -16,38 +16,25 @@ int main()
 	Circle c(10,vec3(0,0,0),vec3(400,300,0),40);//圆圈
 	
 	Circle c1(10, vec3(0,0,0),vec3(200, 270, 0), 40);//圆圈
-	c1.angular_velocity = vec3(0, 0, 1);
+	Circle c2(10, vec3(0, 0, 0), vec3(100, 300, 0), 40);//圆圈
+	//c1.angular_velocity = vec3(0, 0, 1);
 	Obj_Forces CG(&c);//力结合体
 	Obj_Forces CG1(&c1);//力结合体
+	Obj_Forces CG2(&c2);//力结合体
 	//CG.addForce(&G);
 	CG.addForce(new Elastic(vec3(-1,0,0),COLLIDEFORCE));
-	CG1.addForce(new Elastic(vec3(1, 0, 0), COLLIDEFORCE));
+	//CG1.addForce(new Elastic(vec3(1, 0, 0), COLLIDEFORCE));
 	world w;
 	//创建一个实例圆圈
 	DrawCircle dc;
 	ICircle icircle(CG,dc);
 	ICircle icircle1(CG1, dc);
+	ICircle icircle2(CG2, dc);
 	//创建一个实例直线
-	Line l(100000,vec3(50,0,0),vec3(400,0,0),vec3(0,400,0));
-	DrawLine dl;
-	Obj_Forces LG(&l);
-	ILine iline(LG,dl);
-
-	Line l2(100000, vec3(0, 50, 0), vec3(0, 400, 0), vec3(50, 0, 0));
-	//DrawLine dl;
-	Obj_Forces LG2(&l2);
-	ILine iline1(LG2, dl);
-
-	Line l3(20, vec3(0, 50, 0), vec3(0, 400, 0), vec3(400, 0, 0));
-	//DrawLine dl;
-	Obj_Forces LG3(&l3);
-	ILine iline2(LG3, dl);
-
+	
 	w.put(icircle.c);
 	w.put(icircle1.c);
-	/*w.put(iline.c);
-	w.put(iline1.c);
-	w.put(iline2.c);*/
+	w.put(icircle2.c);
 	while (1)
 	{
 		Mat window = Mat::zeros(Size(512, 512), CV_8UC3);
@@ -56,6 +43,8 @@ int main()
 		icircle.draw(window);
 		icircle1.update();
 		icircle1.draw(window);
+		icircle2.update();
+		icircle2.draw(window);
 		/*iline.update();
 		iline.draw(window);
 		iline1.update();
